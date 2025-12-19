@@ -39,11 +39,13 @@ public class Window extends Canvas implements Runnable{
     }
   
     public void run(){
-        this.createBufferStrategy(2);
+        this.createBufferStrategy(3);
         BufferStrategy bs = this.getBufferStrategy();
         
         while(running){
             Graphics g = bs.getDrawGraphics();
+            g.setColor(java.awt.Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
             renderer.Render(this, g);
             g.dispose();
             bs.show();
