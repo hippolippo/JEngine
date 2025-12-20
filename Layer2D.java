@@ -1,11 +1,11 @@
 import java.util.Arrays;
 
 public class Layer2D implements RenderLayer{
-    Square[] objs;
+    GameObject[] objs;
 
     public Layer2D(){
         // UNIMPLEMENTED - PLACEHOLDER
-        objs = new Square[]{
+        objs = new GameObject[]{
             new RollingSquare()
         };
     }

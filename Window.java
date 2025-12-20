@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.Canvas;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
 public class Window extends Canvas implements Runnable{
@@ -29,9 +30,34 @@ public class Window extends Canvas implements Runnable{
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
 
         thread = new Thread(this);
         thread.start();
+    }
+
+    public void setFullscreen(boolean enable) {
+        // 1. If the state is already correct, do nothing
+        if (this.fullscreen == enable) return;
+    
+        synchronized(this){
+            this.fullscreen = enable;
+            frame.dispose();
+            if (enable) {
+                frame.setUndecorated(true);
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            } else {
+                frame.setUndecorated(false);
+                frame.setExtendedState(JFrame.NORMAL);
+                this.setSize(800, 600);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+            }
+        
+            frame.setVisible(true);
+            this.createBufferStrategy(2);
+            this.requestFocus();
+        }
     }
 
     public void stop(){
@@ -39,16 +65,28 @@ public class Window extends Canvas implements Runnable{
     }
   
     public void run(){
-        this.createBufferStrategy(3);
-        BufferStrategy bs = this.getBufferStrategy();
+        this.createBufferStrategy(2);
         
         while(running){
-            Graphics g = bs.getDrawGraphics();
-            g.setColor(java.awt.Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            renderer.Render(this, g);
-            g.dispose();
-            bs.show();
+            synchronized(this) {
+                BufferStrategy bs = this.getBufferStrategy();
+                if(bs == null) continue;
+
+                try{
+                    Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+                    RenderingHints hints = new RenderingHints(
+                        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON
+                    );
+                    g.setRenderingHints(hints);
+                    g.setColor(java.awt.Color.WHITE);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                    renderer.Render(this, g);
+                    g.dispose();
+                    bs.show();
+                } catch(IllegalStateException e) {
+                    //only occurs during fullscreen switch, can skip frame
+                }
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.MouseInfo;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -21,7 +20,7 @@ public class Square implements GameObject{
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Window window, Graphics2D g) {
         Point p1 = position.add(new Vector2(size, rotation.rotateDegrees(45))).toScreenPoint();
         Point p2 = position.add(new Vector2(size, rotation.rotateDegrees(135))).toScreenPoint();
         Point p3 = position.add(new Vector2(size, rotation.rotateDegrees(225))).toScreenPoint();

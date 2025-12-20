@@ -86,4 +86,8 @@ public final class Vector2 {
     public static Vector2 normalize(Vector2 first){
         return new Vector2(1, first.getDirection());
     }
+
+    public static Vector2 zero(){
+        return new Vector2(0,0);
+    }
 }

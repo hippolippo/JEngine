@@ -1,5 +1,5 @@
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public interface GameObject {
-    public void draw(Graphics g);
+    public void draw(Window window, Graphics2D g);
 }
