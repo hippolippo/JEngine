@@ -1,8 +1,19 @@
+package Display;
 import javax.swing.JFrame;
+
+import Textures.Texture2D;
+
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 public class Window extends Canvas implements Runnable{
     private boolean running = true;
@@ -11,6 +22,7 @@ public class Window extends Canvas implements Runnable{
     private Thread thread;
     private JFrame frame;
     private Renderer renderer;
+    private Graphics2D graphics;
     
     public Window(String title, boolean fullscreen, Renderer renderer){
         this.title = title;
@@ -60,6 +72,19 @@ public class Window extends Canvas implements Runnable{
         }
     }
 
+    public void setMouseVisibility(boolean enable) {
+        if(enable){
+            frame.getContentPane().setCursor(Cursor.getDefaultCursor());
+        }else{
+            BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                cursorImg, new Point(0, 0), "blank cursor");
+
+            // Set the blank cursor to the JFrame.
+            frame.getContentPane().setCursor(blankCursor);
+        }
+    }
+
     public void stop(){
         running = false;
     }
@@ -73,20 +98,43 @@ public class Window extends Canvas implements Runnable{
                 if(bs == null) continue;
 
                 try{
-                    Graphics2D g = (Graphics2D)bs.getDrawGraphics();
-                    RenderingHints hints = new RenderingHints(
-                        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON
-                    );
-                    g.setRenderingHints(hints);
-                    g.setColor(java.awt.Color.WHITE);
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                    renderer.Render(this, g);
-                    g.dispose();
+                    graphics = (Graphics2D)bs.getDrawGraphics();
+                    // Set antialiasing polygon hints
+                    graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                
+                    // 3. Antialiasing: Keeps the edges of the rotated image container smooth
+                    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                                        RenderingHints.VALUE_ANTIALIAS_ON);
+                    graphics.setColor(java.awt.Color.WHITE);
+                    graphics.fillRect(0, 0, getWidth(), getHeight());
+                    renderer.Render(this, graphics);
+                    graphics.dispose();
                     bs.show();
-                } catch(IllegalStateException e) {
-                    //only occurs during fullscreen switch, can skip frame
+                    // Wait a short period to avoid excessive resource usage
+                    Thread.sleep(2);
+                } catch(Exception e) {
+                    //Safe to ignore
                 }
             }
         }
     }
+
+    public void drawImage2D(Texture2D texture, AffineTransform transform) {
+        graphics.drawImage(texture.getImage(), transform, null);
+    }
+
+    public void setColor(Color color) {
+        graphics.setColor(color);
+    }
+
+    public void drawPolygon(Polygon shape) {
+        graphics.drawPolygon(shape);
+    }
+
+    public void fillPolygon(Polygon shape) {
+        graphics.fillPolygon(shape);
+    }
+
+    
 }

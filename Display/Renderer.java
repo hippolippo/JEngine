@@ -1,3 +1,4 @@
+package Display;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -13,9 +14,7 @@ public class Renderer {
 
     public void Render(Window window, Graphics2D g){
         for(RenderLayer layer: layers){
-            for(GameObject obj: layer.getSortedGameObjects()){
-                obj.draw(window, g);
-            }
+            layer.draw(window, g);
         }
     }
 }
