@@ -12,12 +12,16 @@ public class Layer2D implements RenderLayer{
     Object2D[] objs;
     Camera2D camera;
 
+    public static Mouse mouse = new Mouse(new Texture2D("Assets/cursor.png"));
+    public static RollingSquare rs = new RollingSquare();
+
     public Layer2D(){
         camera = new Camera2D();
         // UNIMPLEMENTED - PLACEHOLDER
         objs = new Object2D[]{
-            new RollingSquare(), new Mouse(new Texture2D("Assets/cursor.png"))
+            rs, mouse
         };
+        
     }
 
     public Iterable<Object2D> getSortedGameObjects() {

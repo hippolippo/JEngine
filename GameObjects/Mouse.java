@@ -1,7 +1,5 @@
 package GameObjects;
 
-import java.awt.MouseInfo;
-
 import Display.Window;
 import Spatial.Vector2;
 import Textures.Texture2D;
@@ -15,9 +13,7 @@ public class Mouse extends Image{
     @Override
     public void draw(Window window, Camera2D camera){
         //Ignore Camera, draw to exact cursor position
-        java.awt.Point screenPosition = window.getLocationOnScreen();
-        java.awt.Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        position = new Vector2(mousePosition.getX() - screenPosition.getX(), mousePosition.getY() - screenPosition.getY());
+        position = inputManager.liveMousePosition();
         super.draw(window, Camera2D.basic());
     }
 }

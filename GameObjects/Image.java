@@ -6,7 +6,7 @@ import Spatial.Angle;
 import Spatial.Vector2;
 import Textures.Texture2D;
 
-public class Image implements Object2D{
+public class Image extends Object2D{
 
     public enum HorizontalOffset{
         Left, Center, Right
@@ -72,25 +72,18 @@ public class Image implements Object2D{
         setOffset(new Vector2(xoffset, yoffset));
     }
 
-    @Override
     public void draw(Window window, Camera2D camera) {
         if(texture.isNull()) return;
 
         AffineTransform transform = new AffineTransform();
-        transform.translate(position.getX()-offset.getX()*scale.getX(), position.getY()-offset.getY()*scale.getY());
-        transform.scale(scale.getX(), scale.getY());
+        // TODO: make work with camera
+        transform.translate(position.getX()-offset.getX()*scale.getX()-camera.position.getX()*camera.scale.getX(), position.getY()-offset.getY()*scale.getY()-camera.position.getY()*camera.scale.getY());
+        transform.scale(scale.getX()*camera.scale.getX(), scale.getY()*camera.scale.getY());
         transform.rotate(-rotation.getRadians(), offset.getX(), offset.getY());
-        window.drawImage2D(texture, transform);
+        window.drawImage2D(texture, transform); 
     }
 
-    @Override
-    public void setHidden(boolean enable) {
-        hidden = enable;
-    }
-
-    @Override
-    public boolean isHidden() {
-        return hidden;
-    }
-    
+    public void update(int delta) {
+        // pass
+    }  
 }

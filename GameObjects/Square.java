@@ -7,7 +7,7 @@ import Display.Window;
 import Spatial.Angle;
 import Spatial.Vector2;
 
-public class Square implements Object2D{
+public class Square extends Object2D{
     Vector2 position;
     double size;
     Angle rotation;
@@ -21,7 +21,6 @@ public class Square implements Object2D{
         this.color = color;
     }
 
-    @Override
     public void draw(Window window, Camera2D camera) {
         Point p1 = position.add(new Vector2(size, rotation.rotateDegrees(45))).toScreenPoint();
         Point p2 = position.add(new Vector2(size, rotation.rotateDegrees(135))).toScreenPoint();
@@ -34,14 +33,8 @@ public class Square implements Object2D{
         window.fillPolygon(shape);
     }
 
-    @Override
-    public void setHidden(boolean enable) {
-        hidden = enable;
-    }
-
-    @Override
-    public boolean isHidden() {
-        return hidden;
+    public void update(int delta) {
+        // pass
     }
     
 }

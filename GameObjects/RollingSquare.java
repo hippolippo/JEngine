@@ -1,5 +1,4 @@
 package GameObjects;
-import java.awt.MouseInfo;
 
 import Display.Window;
 import Spatial.Angle;
@@ -14,12 +13,14 @@ public class RollingSquare extends Image{
 
     @Override
     public void draw(Window window, Camera2D camera){
-        java.awt.Point screenPosition = window.getLocationOnScreen();
-        int screenX = screenPosition.x;
-        double mouseX = MouseInfo.getPointerInfo().getLocation().getX() - screenX;
-        position = new Vector2(mouseX, position.getY());
-        rotation = Angle.fromDegrees(-mouseX/2);
         super.draw(window, camera);
     } 
+
+    @Override
+    public void update(int delta){
+        double mouseX = inputManager.mousePosition().getX();
+        position = new Vector2(mouseX, position.getY());
+        rotation = Angle.fromDegrees(-mouseX/2);
+    }
     
 }
