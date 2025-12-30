@@ -38,6 +38,10 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
     private boolean focused;
     private boolean focusedState;
     private boolean lastFocusedState;
+    // Live, this tick, and last tick in-window state
+    private boolean inWindow;
+    private boolean inWindowState;
+    private boolean lastInWindowState;
     // Live and this tick state of typed keys
     private LinkedList<Integer> typed = new LinkedList<>();
     private LinkedList<Integer> typedState = new LinkedList<>();
@@ -86,6 +90,9 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
         // Window Focus
         lastFocusedState = focusedState;
         focusedState = focused;
+        // In Window
+        lastInWindowState = inWindowState;
+        inWindowState = inWindow;
         // Typed
         if(!typed.isEmpty()){
             typedState = typed;
@@ -109,12 +116,14 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
     public void mouseDragged(MouseEvent e) {
         x = e.getX();
         y = e.getY();
+        inWindow = true;
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         x = e.getX();
         y = e.getY();
+        inWindow = true;
     }
 
     @Override
@@ -140,12 +149,12 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // pass
+        inWindow = true;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // pass
+        inWindow = false;
     }
 
     @Override
@@ -235,6 +244,14 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 
     public double getScrollMovement(){
         return preciseScrollDelta;
+    }
+
+    public boolean mouseInWindow(){
+        return inWindowState;
+    }
+
+    public boolean liveMouseInWindow(){
+        return inWindow;
     }
 
     // Focus Getters
