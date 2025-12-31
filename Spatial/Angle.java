@@ -1,6 +1,8 @@
 package Spatial;
 
-public final class Angle {
+import Utilities.Lerpable;
+
+public final class Angle implements Lerpable<Angle> {
     private final double measurement;
     private final static Angle zero = new Angle(0);
 
@@ -56,5 +58,19 @@ public final class Angle {
 
     public static Angle add(Angle first, Angle second){
         return new Angle(first.measurement+second.measurement);
+    }
+
+    public static Angle lerp(Angle first, Angle second, double amount){
+        return new Angle(first.measurement*(1-amount)+second.measurement*amount);
+    }
+
+    public static Angle lerpAdd(Angle first, double rotations, double amount){
+        return new Angle(first.measurement+rotations*amount);
+    }
+
+    @Override
+    public Angle lerp(Angle other, double amount) {
+        // TODO: make passing zero not flip
+        return new Angle(Lerpable.lerpDouble(measurement, other.measurement, amount));
     }
 }

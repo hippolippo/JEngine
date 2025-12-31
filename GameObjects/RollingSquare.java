@@ -2,12 +2,12 @@ package GameObjects;
 
 import Display.Window;
 import Spatial.Angle;
-import Spatial.Vector2;
+import Spatial.Point2;
 
 public class RollingSquare extends Image{
 
     public RollingSquare() {
-        super("Assets/donald.png", new Vector2(0, 300), new Vector2(.25, .25), null);
+        super("Assets/donald.png", new Point2(0, 300), new Point2(.25, .25), null);
         //super(new Vector2(0, 300), 50, Angle.zero(), Color.RED);
     }
 
@@ -19,8 +19,11 @@ public class RollingSquare extends Image{
     @Override
     public void update(int delta){
         double mouseX = inputManager.mousePosition().getX();
-        position = new Vector2(mouseX, position.getY());
-        rotation = Angle.fromDegrees(-mouseX/2);
+        setPosition(new Point2(mouseX, position.getY()), delta);
+        setRotation(Angle.fromDegrees(-mouseX/2), delta);
+        if(inputManager.keyPressed(65)){
+            setScale(new Point2(scale.getX()*-1, scale.getY()), 200);
+        }
     }
     
 }

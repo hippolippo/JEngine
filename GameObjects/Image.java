@@ -3,6 +3,7 @@ import java.awt.geom.AffineTransform;
 
 import Display.Window;
 import Spatial.Angle;
+import Spatial.Point2;
 import Spatial.Vector2;
 import Textures.Texture2D;
 
@@ -17,22 +18,17 @@ public class Image extends Object2D{
     };
 
     Texture2D texture;
-    Vector2 position;
-    Vector2 scale;
     Vector2 offset;
-    Angle rotation;
-    boolean hidden = false;
-    
 
-    public Image(Texture2D texture, Vector2 position, Vector2 scale, Angle rotation){
+    public Image(Texture2D texture, Point2 position, Point2 scale, Angle rotation){
         this.texture = texture;
         this.offset = new Vector2(((double)texture.width())/2,((double)texture.height())/2);
-        this.position = position == null ? Vector2.zero() : position;
-        this.scale = scale == null ? new Vector2(1,1) : scale;
-        this.rotation = rotation == null ? Angle.zero() : rotation;
+        setPosition(position == null ? Point2.zero() : position);
+        setScale(scale == null ? new Point2(1,1) : scale);
+        setRotation(rotation == null ? Angle.zero() : rotation);
     }
 
-    public Image(String path, Vector2 position, Vector2 scale, Angle rotation){
+    public Image(String path, Point2 position, Point2 scale, Angle rotation){
         this(new Texture2D(path), position, scale, rotation);
     }
 
@@ -74,7 +70,9 @@ public class Image extends Object2D{
 
     public void draw(Window window, Camera2D camera) {
         if(texture.isNull()) return;
-
+        Point2 position = getDrawPosition();
+        Point2 scale = getDrawScale();
+        Angle rotation = getDrawRotation();
         AffineTransform transform = new AffineTransform();
         // TODO: make work with camera
         transform.translate(position.getX()-offset.getX()*scale.getX()-camera.position.getX()*camera.scale.getX(), position.getY()-offset.getY()*scale.getY()-camera.position.getY()*camera.scale.getY());

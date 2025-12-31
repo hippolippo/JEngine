@@ -14,7 +14,7 @@ public class Mouse extends Image{
     public void draw(Window window, Camera2D camera){
         //Ignore Camera, draw to exact cursor position
         if(inputManager.liveMouseInWindow()){
-            position = inputManager.liveMousePosition();
+            setPosition(inputManager.liveMousePosition());
             super.draw(window, Camera2D.basic());
         }
     }

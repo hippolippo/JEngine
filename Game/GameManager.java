@@ -58,11 +58,14 @@ public class GameManager extends Thread{
                     tickCount = target-1;
                 }
             }else{
-                try {
-                    sleep(targetTime-now);
-                } catch (InterruptedException e) {
-                    running = false;
+                if(targetTime-now > 2){
+                    try {
+                        sleep(targetTime-now-2);
+                    } catch (InterruptedException e) {
+                        running = false;
+                    }
                 }
+                while(System.currentTimeMillis() < targetTime);
             }
             
             

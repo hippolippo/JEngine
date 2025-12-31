@@ -1,53 +1,50 @@
 package Spatial;
 
-import java.awt.Point;
+public class Vector2 extends Point2 {
 
-public final class Vector2 {
-    final double x;
-    final double y;
     final double magnitude;
     final Angle direction;
+    final static Vector2 zero = new Vector2(0,0);
+    final static Vector2 unit = new Vector2(1,1);
 
     public Vector2(double x, double y){
-        this.x = x;
-        this.y = y;
+        super(x,y);
         this.magnitude = Math.sqrt(x*x+y*y);
         // TODO: MAKE THIS WORK vvv
         this.direction = Angle.fromRadians(Math.atan(x/y));
     }
 
     public Vector2(double magnitude, Angle direction){
-        this.x = magnitude*Math.sin(direction.getRadians());
-        this.y = magnitude*Math.cos(direction.getRadians());
+        super(magnitude*Math.sin(direction.getRadians()), magnitude*Math.cos(direction.getRadians()));
         this.magnitude = magnitude;
         this.direction = direction;
     }
 
-    public double getX(){
-        return x;
-    }
-
-    public double getY(){
-        return y;
+    public Vector2(Point2 point){
+        this(point.x, point.y);
     }
 
     public double getMagnitude(){
         return magnitude;
     }
 
+    public static double getMagnitude(Point2 point){
+        return new Vector2(point).getMagnitude();
+    }
+
     public Angle getDirection(){
         return direction;
     }
 
-    public Point toScreenPoint(){
-        return new Point((int)x,(int)y);
+    public static Angle getDirection(Point2 point){
+        return new Vector2(point).getDirection();
     }
 
-    public Vector2 add(Vector2 other){
+    public Vector2 add(Point2 other){
         return add(this, other);
     }
 
-    public Vector2 subtract(Vector2 other){
+    public Vector2 subtract(Point2 other){
         return subtract(this, other);
     }
 
@@ -63,19 +60,19 @@ public final class Vector2 {
         return rotate(this, angle);
     }
 
-    public static Vector2 add(Vector2 first, Vector2 second){
+    public static Vector2 add(Point2 first, Point2 second){
         return new Vector2(first.x+second.x, first.y+second.y);
     }
 
-    public static Vector2 subtract(Vector2 first, Vector2 second){
+    public static Vector2 subtract(Point2 first, Point2 second){
         return new Vector2(first.x-second.x, first.y-second.y);
     }
 
-    public static Vector2 negative(Vector2 first){
+    public static Vector2 negative(Point2 first){
         return new Vector2(-first.x, -first.y);
     }
 
-    public static Vector2 multiply(Vector2 first, double scalar){
+    public static Vector2 multiply(Point2 first, double scalar){
         return new Vector2(first.x*scalar, first.y*scalar);
     }
 
@@ -88,6 +85,10 @@ public final class Vector2 {
     }
 
     public static Vector2 zero(){
-        return new Vector2(0,0);
+        return zero;
+    }
+
+    public static Vector2 unit(){
+        return unit;
     }
 }

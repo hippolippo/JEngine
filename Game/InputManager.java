@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import Display.Window;
 import Spatial.Vector2;
+import Spatial.Point2;
 
 public class InputManager implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, FocusListener{
     
@@ -165,16 +166,16 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if(0 <= key && key < keyState.length){
-            keyState[key] = true;
+        if(0 <= key && key < keys.length){
+            keys[key] = true;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
-        if(0 <= key && key < keyState.length){
-            keyState[key] = false;
+        if(0 <= key && key < keys.length){
+            keys[key] = false;
         }
     }
 
@@ -222,12 +223,12 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
         return !mouseButtonsState[buttonCode] && lastMouseButtonsState[buttonCode];
     }
 
-    public Vector2 mousePosition(){
-        return new Vector2(xState, yState);
+    public Point2 mousePosition(){
+        return new Point2(xState, yState);
     }
 
-    public Vector2 liveMousePosition(){
-        return new Vector2(x, y);
+    public Point2 liveMousePosition(){
+        return new Point2(x, y);
     }
 
     public boolean mouseMoved(){
@@ -252,6 +253,14 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 
     public boolean liveMouseInWindow(){
         return inWindow;
+    }
+
+    public boolean mouseMovedInWindow(){
+        return inWindowState && !lastInWindowState;
+    }
+
+    public boolean mouseMovedOutWindow(){
+        return !inWindowState && lastInWindowState;
     }
 
     // Focus Getters

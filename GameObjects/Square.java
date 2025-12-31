@@ -31,6 +31,7 @@ public class Square extends Object2D{
         window.setColor(color);
         window.drawPolygon(shape);
         window.fillPolygon(shape);
+        
     }
 
     public void update(int delta) {
