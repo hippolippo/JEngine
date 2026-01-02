@@ -56,6 +56,10 @@ public class Vector2 extends Point2 {
         return multiply(this, scalar);
     }
 
+    public Vector2 hadamard(Point2 other){
+        return hadamard(this, other);
+    }
+
     public Vector2 rotate(Angle angle){
         return rotate(this, angle);
     }
@@ -74,6 +78,10 @@ public class Vector2 extends Point2 {
 
     public static Vector2 multiply(Point2 first, double scalar){
         return new Vector2(first.x*scalar, first.y*scalar);
+    }
+
+    public static Vector2 hadamard(Point2 first, Point2 second){
+        return new Vector2(first.getX()*second.getX(), first.getY()*second.getY());
     }
 
     public static Vector2 rotate(Vector2 first, Angle angle){

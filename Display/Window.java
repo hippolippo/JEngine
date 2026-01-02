@@ -43,13 +43,13 @@ public class Window extends Canvas implements Runnable{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        requestFocusInWindow();
 
         thread = new Thread(this);
         thread.start();
     }
 
     public void setFullscreen(boolean enable) {
-        // 1. If the state is already correct, do nothing
         if (this.fullscreen == enable) return;
     
         synchronized(this){
@@ -79,8 +79,6 @@ public class Window extends Canvas implements Runnable{
             BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
             Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                 cursorImg, new Point(0, 0), "blank cursor");
-
-            // Set the blank cursor to the JFrame.
             frame.getContentPane().setCursor(blankCursor);
         }
     }
@@ -99,11 +97,8 @@ public class Window extends Canvas implements Runnable{
 
                 try{
                     graphics = (Graphics2D)bs.getDrawGraphics();
-                    // Set antialiasing polygon hints
                     graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
                         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                
-                    // 3. Antialiasing: Keeps the edges of the rotated image container smooth
                     graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                                         RenderingHints.VALUE_ANTIALIAS_ON);
                     graphics.setColor(java.awt.Color.WHITE);

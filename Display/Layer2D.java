@@ -16,7 +16,7 @@ public class Layer2D implements RenderLayer{
     public static RollingSquare rs = new RollingSquare();
 
     public Layer2D(){
-        camera = new Camera2D();
+        camera = Camera2D.basic();
         // UNIMPLEMENTED - PLACEHOLDER
         objs = new Object2D[]{
             rs, mouse

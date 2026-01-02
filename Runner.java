@@ -3,14 +3,16 @@ import Display.Layer2D;
 import Display.Renderer;
 import Display.Window;
 import Game.GameManager;
+import GameObjects.Camera2D;
 
 public class Runner {
     public static void main(String[] args){
+        System.setProperty("sun.awt.noerasebackground", "true");
         Renderer renderer = new Renderer();
         Window window = new Window("Rolling Square Demo", false, renderer);
         window.start();
         window.setMouseVisibility(false);
-        GameManager gm = new GameManager(window,20);
+        GameManager gm = new GameManager(window,60);
         gm.subscribe(Layer2D.mouse);
         gm.subscribe(Layer2D.rs);
         gm.start();

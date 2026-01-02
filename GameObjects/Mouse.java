@@ -1,13 +1,14 @@
 package GameObjects;
 
 import Display.Window;
+import Drawing.Texture2DDrawer;
 import Spatial.Vector2;
 import Textures.Texture2D;
 
 public class Mouse extends Image{
     public Mouse(Texture2D texture){
         super(texture, null, null, null);
-        setOffset(Vector2.zero());
+        ((Texture2DDrawer)drawer).setOffset(Vector2.zero());
     }
 
     @Override

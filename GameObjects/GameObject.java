@@ -4,6 +4,7 @@ import Game.GameManager;
 import Game.InputManager;
 
 public abstract class GameObject {
+
     boolean hidden = false;
     public void setHidden(boolean enable){
         hidden = enable;

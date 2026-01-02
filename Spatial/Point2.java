@@ -42,6 +42,10 @@ public class Point2 implements Lerpable<Point2>{
         return multiply(this, scalar);
     }
 
+    public Point2 hadamard(Point2 other){
+        return hadamard(this, other);
+    }
+
     public static Point2 add(Point2 first, Point2 second){
         return new Point2(first.x+second.x, first.y+second.y);
     }
@@ -56,6 +60,10 @@ public class Point2 implements Lerpable<Point2>{
 
     public static Point2 multiply(Point2 first, double scalar){
         return new Point2(first.x*scalar, first.y*scalar);
+    }
+
+    public static Point2 hadamard(Point2 first, Point2 second){
+        return new Point2(first.getX()*second.getX(), first.getY()*second.getY());
     }
 
     public static Point2 zero(){
