@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import Display.Window;
 import GameObjects.Camera2D;
 import GameObjects.Object2D;
-import Spatial.Angle;
 import Spatial.Point2;
 import Textures.Texture2D;
 
@@ -66,26 +65,14 @@ public class Texture2DDrawer implements Drawer2D{
 
     public void draw(Window window, Camera2D camera) {
         if (texture.isNull()) return;
-    
-        Point2 objPos = gameObject.getDrawPosition();
-        Point2 objScale = gameObject.getDrawScale();
-        Angle objRot = gameObject.getDrawRotation();
-        
-        Point2 camPos = camera.getDrawPosition();
-        Point2 camScale = camera.getDrawScale();
-        Angle camRot = camera.getRotation();
 
         AffineTransform transform = new AffineTransform();
         // Center
         transform.translate(window.getSize().getWidth() / 2.0, window.getSize().getHeight() / 2.0);
         // Camera
-        transform.scale(camScale.getX(), camScale.getY());
-        transform.rotate(-camRot.getRadians());
-        transform.translate(-camPos.getX(), -camPos.getY());
+        transform.concatenate(camera.getVisualTransform());
         // Object
-        transform.translate(objPos.getX(), objPos.getY());
-        transform.rotate(objRot.getRadians());
-        transform.scale(objScale.getX(), objScale.getY());
+        transform.concatenate(gameObject.getVisualTransform());
         transform.translate(-offset.getX(), -offset.getY());
     
         window.drawImage2D(texture, transform);

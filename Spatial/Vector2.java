@@ -10,8 +10,7 @@ public class Vector2 extends Point2 {
     public Vector2(double x, double y){
         super(x,y);
         this.magnitude = Math.sqrt(x*x+y*y);
-        // TODO: MAKE THIS WORK vvv
-        this.direction = Angle.fromRadians(Math.atan(x/y));
+        this.direction = Angle.fromRadians(Math.atan2(x,y));
     }
 
     public Vector2(double magnitude, Angle direction){
@@ -64,6 +63,14 @@ public class Vector2 extends Point2 {
         return rotate(this, angle);
     }
 
+    public Vector2 normalize(){
+        return normalize(this);
+    }
+
+    public Point2 reduce(){
+        return reduce(this);
+    }
+
     public static Vector2 add(Point2 first, Point2 second){
         return new Vector2(first.x+second.x, first.y+second.y);
     }
@@ -90,6 +97,10 @@ public class Vector2 extends Point2 {
 
     public static Vector2 normalize(Vector2 first){
         return new Vector2(1, first.getDirection());
+    }
+
+    public static Point2 reduce(Vector2 first){
+        return new Point2(first.x, first.y);
     }
 
     public static Vector2 zero(){

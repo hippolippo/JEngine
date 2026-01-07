@@ -87,6 +87,15 @@ public final class Angle implements Lerpable<Angle> {
     }
 
     /**
+     * Provides a new angle representing the negative of this angle.
+     * A 30 degree angle would become -30 degrees.
+     * @return Angle object representing the negative value of this angle
+     */
+    public Angle negative(){
+        return new Angle(-measurement);
+    }
+
+    /**
      * Provides an angle with zero rotation.
      * @return Angle with zero rotation.
      */
@@ -129,6 +138,26 @@ public final class Angle implements Lerpable<Angle> {
      */
     public static Angle add(Angle first, Angle second){
         return new Angle(first.measurement+second.measurement);
+    }
+
+    /**
+     * Provides a new angle representing the provided angle normalized to be between 0-360 degrees.
+     * An angle with value -30 degrees would become 330 degrees. An angle with value 400 degrees would become 40 degrees.
+     * @param first Angle to be normalized
+     * @return Normalized angle object
+     */
+    public static Angle normalize(Angle first){
+        return first.normalize();
+    }
+
+    /**
+     * Provides a new angle representing the negative of the provided angle.
+     * A 30 degree angle would become -30 degrees.
+     * @param first Angle to be negated
+     * @return Angle object representing the negative value of provided angle
+     */
+    public static Angle negative(Angle first){
+        return first.negative();
     }
 
     @Override

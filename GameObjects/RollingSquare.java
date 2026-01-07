@@ -1,5 +1,6 @@
 package GameObjects;
 
+import Display.Layer2D;
 import Display.Window;
 import Spatial.Angle;
 import Spatial.Point2;
@@ -7,7 +8,8 @@ import Spatial.Point2;
 public class RollingSquare extends Image{
 
     public RollingSquare() {
-        super("Assets/donald.png", new Point2(0, 0), new Point2(.25, .25), null);
+        super("Assets/donald.png", new Point2(0, -100), new Point2(.25, .25), null);
+        setParent(Layer2D.mouse);
         //super(new Vector2(0, 300), 50, Angle.zero(), Color.RED);
     }
 
@@ -19,8 +21,9 @@ public class RollingSquare extends Image{
     @Override
     public void update(int delta){
         double mouseX = inputManager.mousePosition().getX();
-        setPosition(new Point2(mouseX, getPosition().getY()), delta);
-        setRotation(Angle.fromDegrees(-mouseX/2+50), delta);
+        setRotation(Angle.fromDegrees(mouseX/2), delta);
+        setPosition(getPosition());
+        //setScale(getScale());
         if(inputManager.keyPressed(65)){
             setScale(new Point2(getScale().getX()*-1, getScale().getY()), 200);
         }

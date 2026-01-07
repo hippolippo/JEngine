@@ -1,6 +1,9 @@
 package Game;
 
+import java.util.HashMap;
 import java.util.HashSet;
+
+import java.util.Iterator;
 
 import Display.Window;
 import GameObjects.GameObject;
@@ -11,14 +14,17 @@ public class GameManager extends Thread{
     private int tickrate;
     private long lastTick;
     private boolean running = false;
-    private HashSet<GameObject> gameObjects;
+    private HashMap<Integer, GameObject> gameObjects;
+    private HashSet<GameObject> roots;
     private long tickCount;
     private long ticksSkipped;
     private boolean skipBehindTicks=true;
+    private int nextId = 0;
 
     public GameManager(Window window, int tickrate){
         inputManager = new InputManager(window);
-        gameObjects = new HashSet<>();
+        gameObjects = new HashMap<>();
+        roots = new HashSet<>();
         this.tickrate = tickrate;
     }
 
@@ -26,10 +32,38 @@ public class GameManager extends Thread{
         this(window, 60);
     }
 
-    public void subscribe(GameObject gameObject){
-        gameObjects.add(gameObject);
+    private void tag(GameObject gameObject){
+        gameObject.setId(nextId++);
+        gameObjects.put(nextId, gameObject);
         gameObject.setGameManager(this);
         gameObject.setInputManager(this.inputManager);
+        Iterator<GameObject> childrenIterator = gameObject.getChildren();
+        while(childrenIterator.hasNext()){
+            GameObject child = childrenIterator.next();
+            tag(child);
+        }
+    }
+
+    public void subscribe(GameObject gameObject){
+        roots.add(gameObject);
+        tag(gameObject);
+    }
+
+    private void update(GameObject gameObject, int delta){
+        gameObject.tick(delta);
+        Iterator<GameObject> childrenIterator = gameObject.getChildren();
+        while(childrenIterator.hasNext()){
+            GameObject child = childrenIterator.next();
+            update(child, delta);
+        }
+    }
+
+    public GameObject objectFromId(int id){
+        return gameObjects.get(id);
+    }
+
+    public int idFromObject(GameObject gameObject){
+        return gameObject.getId();
     }
 
     @Override
@@ -43,8 +77,8 @@ public class GameManager extends Thread{
             int delta = (int) (now-lastTick);
             tickCount++;
             inputManager.update();
-            for(GameObject gameObject : gameObjects){
-                gameObject.update(delta);
+            for(GameObject gameObject : roots){
+                update(gameObject, delta);
             }
             lastTick = now;
             now = System.currentTimeMillis();
@@ -67,8 +101,6 @@ public class GameManager extends Thread{
                 }
                 while(System.currentTimeMillis() < targetTime);
             }
-            
-            
         }
     }
 }
