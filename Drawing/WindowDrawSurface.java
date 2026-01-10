@@ -1,6 +1,5 @@
 package Drawing;
 
-import java.awt.Graphics2D;
 import Display.Window;
 
 /**
@@ -12,18 +11,17 @@ public class WindowDrawSurface extends DrawSurface {
     Window window;
 
     /**
-     * Makes a new WindowDrawSurface that draws to the given Graphics2D object and is associated with the given window.
-     * @param graphics the Graphics2D object to draw to
+     * Creates a WindowDrawSurface that is associated with the given window.
      * @param window the window to associate with this draw surface
      */
-    public WindowDrawSurface(Graphics2D graphics, Window window) {
-        super(graphics);
+    public WindowDrawSurface(Window window) {
+        super(null);
         this.window = window;
     }
 
     /**
-     * Gets the width of the drawing surface.
-     * @return the width of the drawing surface
+     * Get the width of the drawing surface.
+     * @return drawing surface width
      */
     @Override
     public double getWidth() {
@@ -31,8 +29,8 @@ public class WindowDrawSurface extends DrawSurface {
     }
 
     /**
-     * Gets the height of the drawing surface.
-     * @return the height of the drawing surface
+     * Get the height of the drawing surface.
+     * @return drawing surface height
      */
     @Override
     public double getHeight() {

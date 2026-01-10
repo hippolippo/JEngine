@@ -12,7 +12,7 @@ import Textures.Texture2D;
  * @author Caleb Haftel
  */
 public abstract class DrawSurface {
-    private Graphics2D graphics;
+    protected Graphics2D graphics;
 
     /**
      * Creates a new draw surface that draws to the given Graphics2D object.
@@ -73,7 +73,7 @@ public abstract class DrawSurface {
         if (style.applyStrokeStyle(graphics)) {
             graphics.drawPolygon(xPoints, yPoints, points.length);
         }
-        style.applyFillStyle(graphics);
+        style.applyColor(graphics);
         graphics.fillPolygon(xPoints, yPoints, points.length);
     }
 
@@ -101,7 +101,7 @@ public abstract class DrawSurface {
         if (style.applyStrokeStyle(graphics)) {
             graphics.drawPolygon(xPoints, yPoints, points.length);
         }
-        style.applyFillStyle(graphics);
+        style.applyColor(graphics);
         graphics.fillPolygon(xPoints, yPoints, points.length);
     }
     

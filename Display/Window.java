@@ -12,6 +12,10 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+/**
+ * @author Joel Haftel
+ * @author Caleb Haftel
+ */
 public class Window extends Canvas implements Runnable{
     private boolean running = true;
     private String title;
@@ -26,20 +30,20 @@ public class Window extends Canvas implements Runnable{
         this.title = title;
         this.fullscreen = fullscreen;
         this.renderer = renderer;
-        drawSurface = new WindowDrawSurface(null, this);
+        drawSurface = new WindowDrawSurface(this);
     }
 
     /**
-     * Gets the size of the window in the X direction. (width)
-     * @return the width of the window
+     * Gets the width of the window.
+     * @return window width
      */
     public double getSizeX() {
         return getSize().getWidth();
     }
 
     /**
-     * Gets the size of the window in the Y direction. (height)
-     * @return the height of the window
+     * Gets the height of the window.
+     * @return window height
      */
     public double getSizeY() {
         return getSize().getHeight();
