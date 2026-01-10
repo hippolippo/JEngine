@@ -118,7 +118,6 @@ public class Window extends Canvas implements Runnable{
                                         RenderingHints.VALUE_ANTIALIAS_ON);
                     graphics.setColor(java.awt.Color.WHITE);
                     graphics.fillRect(0, 0, getWidth(), getHeight());
-                    graphics.setColor(java.awt.Color.BLUE);
                     width = getSize().getWidth();
                     height = getSize().getHeight();
                     renderer.Render(drawSurface);
