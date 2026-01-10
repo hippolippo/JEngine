@@ -2,17 +2,13 @@ package Display;
 import javax.swing.JFrame;
 
 import Drawing.WindowDrawSurface;
-import Textures.Texture2D;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -25,8 +21,6 @@ public class Window extends Canvas implements Runnable{
     private Renderer renderer;
     private Graphics2D graphics;
     private WindowDrawSurface drawSurface;
-    private double width;
-    private double height;
     
     public Window(String title, boolean fullscreen, Renderer renderer){
         this.title = title;
@@ -34,11 +28,21 @@ public class Window extends Canvas implements Runnable{
         this.renderer = renderer;
         drawSurface = new WindowDrawSurface(null, this);
     }
+
+    /**
+     * Gets the size of the window in the X direction. (width)
+     * @return the width of the window
+     */
     public double getSizeX() {
-        return width;
+        return getSize().getWidth();
     }
+
+    /**
+     * Gets the size of the window in the Y direction. (height)
+     * @return the height of the window
+     */
     public double getSizeY() {
-        return height;
+        return getSize().getHeight();
     }
     public void start(){
         frame = new JFrame(title);
@@ -118,8 +122,6 @@ public class Window extends Canvas implements Runnable{
                                         RenderingHints.VALUE_ANTIALIAS_ON);
                     graphics.setColor(java.awt.Color.WHITE);
                     graphics.fillRect(0, 0, getWidth(), getHeight());
-                    width = getSize().getWidth();
-                    height = getSize().getHeight();
                     renderer.Render(drawSurface);
                     
                     graphics.dispose();
@@ -132,22 +134,4 @@ public class Window extends Canvas implements Runnable{
             }
         }
     }
-
-    public void drawImage2D(Texture2D texture, AffineTransform transform) {
-        graphics.drawImage(texture.getImage(), transform, null);
-    }
-
-    public void setColor(Color color) {
-        graphics.setColor(color);
-    }
-
-    public void drawPolygon(Polygon shape) {
-        graphics.drawPolygon(shape);
-    }
-
-    public void fillPolygon(Polygon shape) {
-        graphics.fillPolygon(shape);
-    }
-
-
 }

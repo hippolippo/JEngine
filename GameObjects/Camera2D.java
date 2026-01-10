@@ -29,6 +29,13 @@ public class Camera2D extends Object2D{
         // pass
     }
 
+    /**
+     * Gets the affine transform for the specified object in the context of the camera.
+     * @param object the object to get the transform for
+     * @param windowWidth the width of the window
+     * @param windowHeight the height of the window
+     * @return the affine transform for the object
+     */
     public AffineTransform getAffineTransformForObject(Object2D object, double windowWidth, double windowHeight) {
         AffineTransform transform = new AffineTransform();
         // Center
