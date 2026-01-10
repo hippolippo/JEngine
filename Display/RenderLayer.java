@@ -1,6 +1,7 @@
 package Display;
-import java.awt.Graphics2D;
+
+import Drawing.DrawSurface;
 
 public interface RenderLayer {
-    public void draw(Window window, Graphics2D g);
+    public void draw(DrawSurface surface);
 }

@@ -1,6 +1,7 @@
 package Display;
 import javax.swing.JFrame;
 
+import Drawing.WindowDrawSurface;
 import Textures.Texture2D;
 
 import java.awt.Canvas;
@@ -23,13 +24,22 @@ public class Window extends Canvas implements Runnable{
     private JFrame frame;
     private Renderer renderer;
     private Graphics2D graphics;
+    private WindowDrawSurface drawSurface;
+    private double width;
+    private double height;
     
     public Window(String title, boolean fullscreen, Renderer renderer){
         this.title = title;
         this.fullscreen = fullscreen;
         this.renderer = renderer;
+        drawSurface = new WindowDrawSurface(null, this);
     }
-
+    public double getSizeX() {
+        return width;
+    }
+    public double getSizeY() {
+        return height;
+    }
     public void start(){
         frame = new JFrame(title);
         if(fullscreen){
@@ -82,10 +92,14 @@ public class Window extends Canvas implements Runnable{
             frame.getContentPane().setCursor(blankCursor);
         }
     }
-
+    public WindowDrawSurface getDrawSurface() {
+        return drawSurface;
+    }
     public void stop(){
         running = false;
     }
+
+    
   
     public void run(){
         this.createBufferStrategy(2);
@@ -94,16 +108,21 @@ public class Window extends Canvas implements Runnable{
             synchronized(this) {
                 BufferStrategy bs = this.getBufferStrategy();
                 if(bs == null) continue;
-
+                
                 try{
                     graphics = (Graphics2D)bs.getDrawGraphics();
+                    drawSurface.updateGraphics(graphics);
                     graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
                         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                                         RenderingHints.VALUE_ANTIALIAS_ON);
                     graphics.setColor(java.awt.Color.WHITE);
                     graphics.fillRect(0, 0, getWidth(), getHeight());
-                    renderer.Render(this, graphics);
+                    graphics.setColor(java.awt.Color.BLUE);
+                    width = getSize().getWidth();
+                    height = getSize().getHeight();
+                    renderer.Render(drawSurface);
+                    
                     graphics.dispose();
                     bs.show();
                     // Wait a short period to avoid excessive resource usage
@@ -131,5 +150,5 @@ public class Window extends Canvas implements Runnable{
         graphics.fillPolygon(shape);
     }
 
-    
+
 }

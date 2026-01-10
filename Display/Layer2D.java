@@ -1,7 +1,7 @@
 package Display;
-import java.awt.Graphics2D;
 import java.util.Arrays;
 
+import Drawing.DrawSurface;
 import GameObjects.Camera2D;
 import GameObjects.Object2D;
 import GameObjects.RollingSquare;
@@ -29,10 +29,12 @@ public class Layer2D implements RenderLayer{
     }
 
     @Override
-    public void draw(Window window, Graphics2D g) {
+    public void draw(DrawSurface surface) {
+        
         for(Object2D obj: getSortedGameObjects()){
+            
             if(obj.isHidden()) continue;
-            obj.draw(window, camera);
+            obj.draw(surface, camera);
         }
     }
     

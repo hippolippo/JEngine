@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import Display.Window;
+import Drawing.DrawSurface;
 import Drawing.Drawer2D;
 import Drawing.LerpableTransform;
 import Drawing.Null2DDrawer;
@@ -91,28 +91,28 @@ public abstract class Object2D extends GameObject{
         }
     }
 
-    public void draw(Window window, Camera2D camera){
-
+    public void draw(DrawSurface surface, Camera2D camera){
+        
         if(orderDirtyFlag){
             renderOrder.clear();
             renderOrder.addAll(children);
             renderOrder.sort((o1, o2) -> Integer.compare(o2.getDrawPriority(), o1.getDrawPriority()));
             orderDirtyFlag = false;
         }
-
+        
         boolean drawnSelf = false;
         for(int i = 0; i < renderOrder.size(); i++){
             Object2D obj = renderOrder.get(i);
             if(!drawnSelf && obj.getDrawPriority() > 0){
                 drawnSelf = true;
-                drawer.draw(window, camera);
+                drawer.draw(surface, camera);
             }
             if(!obj.isHidden()){
-                obj.draw(window, camera);
+                obj.draw(surface, camera);
             }
         }
         if(!drawnSelf){
-            drawer.draw(window, camera);
+            drawer.draw(surface, camera);
             drawnSelf = true;
         }
         
