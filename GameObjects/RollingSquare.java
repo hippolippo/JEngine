@@ -1,7 +1,6 @@
 package GameObjects;
 
 import Display.Layer2D;
-import Display.Window;
 import Spatial.Angle;
 import Spatial.Point2;
 
@@ -12,11 +11,6 @@ public class RollingSquare extends Image{
         setParent(Layer2D.mouse);
         //super(new Vector2(0, 300), 50, Angle.zero(), Color.RED);
     }
-
-    @Override
-    public void draw(Window window, Camera2D camera){
-        super.draw(window, camera);
-    } 
 
     @Override
     public void update(int delta){

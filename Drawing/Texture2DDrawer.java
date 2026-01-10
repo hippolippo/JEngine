@@ -2,7 +2,6 @@ package Drawing;
 
 import java.awt.geom.AffineTransform;
 
-import Display.Window;
 import GameObjects.Camera2D;
 import GameObjects.Object2D;
 import Spatial.Point2;
@@ -63,18 +62,14 @@ public class Texture2DDrawer implements Drawer2D{
         Top, Middle, Bottom
     };
 
-    public void draw(Window window, Camera2D camera) {
+    public void draw(DrawSurface surface, Camera2D camera) {
+        
         if (texture.isNull()) return;
-
-        AffineTransform transform = new AffineTransform();
-        // Center
-        transform.translate(window.getSize().getWidth() / 2.0, window.getSize().getHeight() / 2.0);
-        // Camera
-        transform.concatenate(camera.getVisualTransform());
-        // Object
-        transform.concatenate(gameObject.getVisualTransform());
+        
+        AffineTransform transform = camera.getAffineTransformForObject(gameObject, surface);
+        
         transform.translate(-offset.getX(), -offset.getY());
-    
-        window.drawImage2D(texture, transform);
+        surface.drawImage2D(texture, transform);
+        
     }
 }

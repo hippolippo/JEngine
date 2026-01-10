@@ -9,10 +9,10 @@ public class Runner {
         System.setProperty("sun.awt.noerasebackground", "true");
         Renderer renderer = new Renderer();
         Window window = new Window("Rolling Square Demo", false, renderer);
-        window.start();
-        window.setMouseVisibility(false);
         GameManager gm = new GameManager(window,60);
         gm.subscribe(Layer2D.mouse);
         gm.start();
+        window.start();
+        window.setMouseVisibility(false);
     }
 }

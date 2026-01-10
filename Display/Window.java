@@ -1,20 +1,21 @@
 package Display;
 import javax.swing.JFrame;
 
-import Textures.Texture2D;
+import Drawing.WindowDrawSurface;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+/**
+ * @author Joel Haftel
+ * @author Caleb Haftel
+ */
 public class Window extends Canvas implements Runnable{
     private boolean running = true;
     private String title;
@@ -23,11 +24,13 @@ public class Window extends Canvas implements Runnable{
     private JFrame frame;
     private Renderer renderer;
     private Graphics2D graphics;
+    private WindowDrawSurface drawSurface;
     
     public Window(String title, boolean fullscreen, Renderer renderer){
         this.title = title;
         this.fullscreen = fullscreen;
         this.renderer = renderer;
+        drawSurface = new WindowDrawSurface(this);
     }
 
     public void start(){
@@ -82,10 +85,14 @@ public class Window extends Canvas implements Runnable{
             frame.getContentPane().setCursor(blankCursor);
         }
     }
-
+    public WindowDrawSurface getDrawSurface() {
+        return drawSurface;
+    }
     public void stop(){
         running = false;
     }
+
+    
   
     public void run(){
         this.createBufferStrategy(2);
@@ -94,16 +101,18 @@ public class Window extends Canvas implements Runnable{
             synchronized(this) {
                 BufferStrategy bs = this.getBufferStrategy();
                 if(bs == null) continue;
-
+                
                 try{
                     graphics = (Graphics2D)bs.getDrawGraphics();
+                    drawSurface.updateGraphics(graphics);
                     graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
                         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                                         RenderingHints.VALUE_ANTIALIAS_ON);
                     graphics.setColor(java.awt.Color.WHITE);
                     graphics.fillRect(0, 0, getWidth(), getHeight());
-                    renderer.Render(this, graphics);
+                    renderer.Render(drawSurface);
+                    
                     graphics.dispose();
                     bs.show();
                     // Wait a short period to avoid excessive resource usage
@@ -114,22 +123,4 @@ public class Window extends Canvas implements Runnable{
             }
         }
     }
-
-    public void drawImage2D(Texture2D texture, AffineTransform transform) {
-        graphics.drawImage(texture.getImage(), transform, null);
-    }
-
-    public void setColor(Color color) {
-        graphics.setColor(color);
-    }
-
-    public void drawPolygon(Polygon shape) {
-        graphics.drawPolygon(shape);
-    }
-
-    public void fillPolygon(Polygon shape) {
-        graphics.fillPolygon(shape);
-    }
-
-    
 }

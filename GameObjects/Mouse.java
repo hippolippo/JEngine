@@ -1,6 +1,6 @@
 package GameObjects;
 
-import Display.Window;
+import Drawing.DrawSurface;
 import Drawing.Texture2DDrawer;
 import Spatial.Angle;
 import Spatial.Point2;
@@ -24,11 +24,11 @@ public class Mouse extends Image{
     }
 
     @Override
-    public void draw(Window window, Camera2D camera){
+    public void draw(DrawSurface surface, Camera2D camera){
         //Ignore Camera, draw to exact cursor position
         if(inputManager.liveMouseInWindow()){
             setPosition(inputManager.liveMousePosition());
-            super.draw(window, Camera2D.basic());
+            super.draw(surface, Camera2D.basic());
         }
     }
 }

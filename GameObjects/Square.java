@@ -1,41 +1,34 @@
 package GameObjects;
+
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Point;
-import java.awt.Polygon;
-
-import Display.Window;
+import Drawing.DrawStyle;
+import Drawing.Polygon2DDrawer;
 import Spatial.Angle;
-import Spatial.Vector2;
+import Spatial.Point2;
 
+/**
+    * A class representing a 2D square object.
+    * @author Caleb Haftel
+*/
 public class Square extends Object2D{
-    Vector2 position;
-    double size;
-    Angle rotation;
-    Color color;
-    boolean hidden = false;
 
-    public Square(Vector2 position, double size, Angle rotation, Color color){
-        this.position = position;
-        this.size = size;
-        this.rotation = rotation;
-        this.color = color;
-    }
-
-    public void draw(Window window, Camera2D camera) {
-        Point p1 = position.add(new Vector2(size, rotation.rotateDegrees(45))).toScreenPoint();
-        Point p2 = position.add(new Vector2(size, rotation.rotateDegrees(135))).toScreenPoint();
-        Point p3 = position.add(new Vector2(size, rotation.rotateDegrees(225))).toScreenPoint();
-        Point p4 = position.add(new Vector2(size, rotation.rotateDegrees(315))).toScreenPoint();
-
-        Polygon shape = new Polygon(new int[]{p1.x,p2.x,p3.x,p4.x}, new int[]{p1.y,p2.y,p3.y,p4.y}, 4);
-        window.setColor(color);
-        window.drawPolygon(shape);
-        window.fillPolygon(shape);
-        
+    /**
+     * Creates a new Square with the specified position, size, scale, and rotation.
+     * @param position the position of the square
+     * @param size the size of the square (length of one side)
+     * @param scale the scale of the square (default is 1,1)
+     * @param rotation the rotation of the square (default is 0 degrees)
+     */
+    public Square(Point2 position, double size, Point2 scale, Angle rotation){
+        Polygon2DDrawer drawer = new Polygon2DDrawer(this, new Point2[]{new Point2(size/2, size/2), new Point2(size/2, size/-2), new Point2(size/-2, size/-2), new Point2(size/-2, size/2)}, new DrawStyle(Color.ORANGE, Color.BLACK, new BasicStroke(10)));
+        this.drawer = drawer;
+        setPosition(position == null ? Point2.zero() : position);
+        setScale(scale == null ? new Point2(1,1) : scale);
+        setRotation(rotation == null ? Angle.zero() : rotation);
     }
 
     public void update(int delta) {
         // pass
-    }
-    
+    }  
 }

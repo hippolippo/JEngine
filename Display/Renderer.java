@@ -1,6 +1,7 @@
 package Display;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
+
+import Drawing.DrawSurface;
 
 public class Renderer {
 
@@ -12,9 +13,9 @@ public class Renderer {
         layers.add(new Layer2D());
     }
 
-    public void Render(Window window, Graphics2D g){
+    public void Render(DrawSurface surface){
         for(RenderLayer layer: layers){
-            layer.draw(window, g);
+            layer.draw(surface);
         }
     }
 }
