@@ -224,11 +224,11 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
     }
 
     public Point2 mousePosition(){
-        return new Point2(xState-window.getSizeX()/2, -yState+window.getSizeY()/2);
+        return new Point2(xState-window.getWidth()/2.0, -yState+window.getHeight()/2.0);
     }
 
     public Point2 liveMousePosition(){
-        return new Point2(x-window.getSizeX()/2, -y+window.getSizeY()/2);
+        return new Point2(x-window.getWidth()/2.0, -y+window.getHeight()/2.0);
     }
 
     public boolean mouseMoved(){

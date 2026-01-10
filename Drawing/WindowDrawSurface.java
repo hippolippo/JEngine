@@ -25,7 +25,7 @@ public class WindowDrawSurface extends DrawSurface {
      */
     @Override
     public double getWidth() {
-        return window.getSizeX();
+        return window.getWidth();
     }
 
     /**
@@ -34,6 +34,6 @@ public class WindowDrawSurface extends DrawSurface {
      */
     @Override
     public double getHeight() {
-        return window.getSizeY();
+        return window.getHeight();
     }
 }

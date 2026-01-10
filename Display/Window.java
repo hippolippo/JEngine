@@ -33,21 +33,6 @@ public class Window extends Canvas implements Runnable{
         drawSurface = new WindowDrawSurface(this);
     }
 
-    /**
-     * Gets the width of the window.
-     * @return window width
-     */
-    public double getSizeX() {
-        return getSize().getWidth();
-    }
-
-    /**
-     * Gets the height of the window.
-     * @return window height
-     */
-    public double getSizeY() {
-        return getSize().getHeight();
-    }
     public void start(){
         frame = new JFrame(title);
         if(fullscreen){

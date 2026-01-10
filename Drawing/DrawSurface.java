@@ -23,7 +23,7 @@ public abstract class DrawSurface {
     }
 
     /**
-     * Draws a 2D image with the specified style and transformation.
+     * Draws a 2D image with a style and transformation applied.
      * @param texture the texture to draw
      * @param transform the transformation to apply
      * @param style the drawing style to use
@@ -33,7 +33,7 @@ public abstract class DrawSurface {
     }
 
     /**
-     * Draws a 2D image with the default style.
+     * Draws a 2D image with a transformation applied.
      * @param texture the texture to draw
      * @param transform the transformation to apply
      */
@@ -52,33 +52,40 @@ public abstract class DrawSurface {
         if (style == null) {
             style = DrawStyle.DEFAULT;
         }
-        double[] xYArray = new double[points.length*2];
-        for (int i = 0; i<points.length*2; i+=2) {
-            xYArray[i] = points[i/2].getX();
-            xYArray[i+1] = points[i/2].getY();
-            
-        }
-        
-        double[] movedPoints = new double[points.length*2];
-        
-        transform.transform(xYArray, 0, movedPoints, 0, points.length);
         int[] xPoints = new int[points.length];
         int[] yPoints = new int[points.length];
-        for (int i = 0; i<points.length*2; i+=2) {
-            xPoints[i/2] = (int)movedPoints[i];
-            yPoints[i/2] = (int)movedPoints[i+1];
+        if (transform == null) {
+            for (int i = 0; i<points.length; i+=1) {
+                xPoints[i] = (int)points[i].getX();
+                yPoints[i] = (int)points[i].getY();
+            }
+        } else {
+            double[] xYArray = new double[points.length*2];
+            for (int i = 0; i<points.length*2; i+=2) {
+                xYArray[i] = points[i/2].getX();
+                xYArray[i+1] = points[i/2].getY();
+                
+            }
+            
+            double[] movedPoints = new double[points.length*2];
+            
+            transform.transform(xYArray, 0, movedPoints, 0, points.length);
+            
+            for (int i = 0; i<points.length*2; i+=2) {
+                xPoints[i/2] = (int)movedPoints[i];
+                yPoints[i/2] = (int)movedPoints[i+1];
+            }
         }
-        
-        
+
+        style.applyColor(graphics);
+        graphics.fillPolygon(xPoints, yPoints, points.length);
         if (style.applyStrokeStyle(graphics)) {
             graphics.drawPolygon(xPoints, yPoints, points.length);
         }
-        style.applyColor(graphics);
-        graphics.fillPolygon(xPoints, yPoints, points.length);
     }
 
     /**
-     * Draws a black polygon defined by the given points, applying the specified transformation.
+     * Draws a polygon defined by the given points, applying the specified transformation.
      * @param points the points that define the polygon
      * @param transform the transformation to apply
      */
@@ -92,21 +99,11 @@ public abstract class DrawSurface {
      * @param style the drawing style to use
      */
     public void drawPolygon(Point2[] points, DrawStyle style) {
-        int[] xPoints = new int[points.length];
-        int[] yPoints = new int[points.length];
-        for (int i = 0; i<points.length; i+=1) {
-            xPoints[i] = (int)points[i].getX();
-            yPoints[i] = (int)points[i].getY();
-        }
-        if (style.applyStrokeStyle(graphics)) {
-            graphics.drawPolygon(xPoints, yPoints, points.length);
-        }
-        style.applyColor(graphics);
-        graphics.fillPolygon(xPoints, yPoints, points.length);
+        drawPolygon(points, null, style);
     }
     
     /**
-     * Draws a black polygon defined by the given points.
+     * Draws a polygon defined by the given points.
      * @param points the points that define the polygon
      */
     public void drawPolygon(Point2[] points) {
@@ -114,7 +111,7 @@ public abstract class DrawSurface {
     }
 
     /**
-     * Updates the Graphics2D object used for drawing.
+     * Replaces the underlying Graphics2D object used for drawing.
      * @param graphics the Graphics2D object to use
      */
     public void updateGraphics(Graphics2D graphics) {
